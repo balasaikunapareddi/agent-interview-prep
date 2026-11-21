@@ -1,0 +1,35 @@
+ALEX CARTER — Senior Backend Engineer
+(Fictional sample resume, written for this demo. Any resemblance to a real person is coincidental.)
+
+SUMMARY
+Backend engineer with 6 years of experience building high-throughput APIs and data services in Python. Focus on reliability, clean service boundaries, and measurable latency wins.
+
+SKILLS
+Python, FastAPI, Flask, PostgreSQL, SQL, Redis, Kafka, Docker, AWS (ECS, RDS, S3), CI/CD (GitHub Actions), pytest, microservices, REST APIs, system design
+
+EXPERIENCE
+
+Senior Backend Engineer — Ledgerly (fintech), 2022–present
+- Designed and built payment-processing REST APIs in Python/FastAPI serving 2M requests/day at p99 latency under 180ms.
+- Led migration of the monolith billing module into 5 microservices; cut deploy time from 40 minutes to 6 minutes with Docker-based CI/CD pipelines on GitHub Actions.
+- Optimized PostgreSQL queries and added Redis caching for account lookups; reduced p95 read latency by 43%.
+- Built Kafka-based event pipeline for transaction notifications, processing 300k events/day with exactly-once delivery semantics.
+- Introduced contract testing and raised unit test coverage from 41% to 82% across the payments codebase.
+- Mentored 3 junior engineers; ran weekly design reviews for API changes.
+
+Backend Engineer — Cartway (e-commerce), 2020–2022
+- Built order-management APIs and inventory sync jobs in Python/Flask backed by PostgreSQL.
+- Wrote nightly ETL data pipelines in Python that reconciled 1.2M order records across 3 source systems into a reporting warehouse.
+- Deployed services to AWS ECS with Docker; set up dashboards and alerts that cut mean time to detection from 25 minutes to 4 minutes.
+- Partnered with the data team on a churn-prediction side project: trained a scikit-learn gradient-boosting model on customer activity data (holdout AUC 0.81) and served predictions behind a FastAPI endpoint used by the retention team.
+
+Backend Engineer — Brightpath Learning, 2019–2020
+- Maintained Django REST APIs for a course platform with 80k monthly active users.
+- Automated reporting jobs and reduced manual data exports by 10 hours/week.
+
+EDUCATION
+B.S. Computer Science, State University, 2019
+
+PROJECTS
+- Open-source rate-limiting middleware for FastAPI (1.4k GitHub stars).
+- Weekend project: built a small TF-IDF search tool over personal notes in pure Python.

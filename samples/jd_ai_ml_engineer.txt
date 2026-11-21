@@ -1,0 +1,30 @@
+AI/ML ENGINEER — Northwind AI
+(Fictional sample job description, written for this demo.)
+
+ABOUT THE ROLE
+Northwind AI builds document-intelligence products for operations teams. We are hiring an AI/ML Engineer to own the modeling and LLM features end to end: from data pipelines and model training to production inference and evaluation.
+
+WHAT YOU WILL DO
+- Design and ship LLM-powered features, including retrieval-augmented generation (RAG) over large document corpora.
+- Build embedding pipelines and operate vector databases for semantic search at scale.
+- Fine-tune open-source LLMs for domain-specific extraction tasks and evaluate them rigorously.
+- Train and evaluate machine learning models in PyTorch; run offline model evaluation and online A/B testing to decide what ships.
+- Build data pipelines with Spark and Airflow to feed training and evaluation datasets.
+- Own MLOps: model registry, deployment, monitoring for drift, and rollback.
+- Partner with backend engineers on REST APIs that serve model predictions with strict latency budgets.
+
+REQUIREMENTS
+- 4+ years of software engineering experience, with strong Python.
+- Production experience with machine learning models: training, model evaluation, and deployment.
+- Hands-on experience with LLMs, prompt engineering, and RAG architectures.
+- Experience with PyTorch or TensorFlow and modern deep learning workflows.
+- Experience with embeddings and vector databases (e.g. pgvector, Pinecone, FAISS).
+- Solid SQL and experience with PostgreSQL.
+- Experience deploying services with Docker and Kubernetes on AWS.
+- Familiarity with statistics and A/B testing for model validation.
+- Strong system design skills for distributed, latency-sensitive systems.
+
+NICE TO HAVE
+- Experience fine-tuning LLMs (LoRA/QLoRA) for structured extraction.
+- Kafka or other streaming systems for real-time features.
+- Redis for caching and feature serving.

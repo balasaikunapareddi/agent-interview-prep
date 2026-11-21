@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-interview-prep"
+version = "0.1.0"
+description = "LlamaIndex agent that turns a resume + job description into a gap analysis, likely interview questions mapped to your actual experience, a scored mock interview, and a focused study plan. Mock-first: no API key, no network."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Bala Sai Kunapareddi" }]
+dependencies = [
+    "llama-index-core>=0.12",
+    "pydantic>=2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+live = [
+    "llama-index-llms-gemini>=0.4",
+    "llama-index-embeddings-gemini>=0.3",
+]
+
+[project.scripts]
+interview-prep-demo = "agent_interview_prep.demo:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
