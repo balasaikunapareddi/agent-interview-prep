@@ -86,7 +86,7 @@ STUDY PLAN
 export GEMINI_API_KEY=...
 ```
 
-Live mode (`live.py`) builds a LlamaIndex `VectorStoreIndex` over the resume with Gemini embeddings and a `FunctionAgent` (Gemini) that calls the same typed tools conversationally. **Not exercised by the test suite** — no key in CI; the code paths are import-guarded and documented, the mock path is the verified one.
+Live mode (`live.py`) builds a LlamaIndex `VectorStoreIndex` over the resume with Gemini embeddings and a `FunctionAgent` (Gemini) that calls the same typed tools conversationally. Live mode is verified against the Gemini free tier: the embedding retriever (`gemini-embedding-2-preview`) returned the right resume chunk for an ML-experience query, and the FunctionAgent (`gemini-3.5-flash-lite`) ran the gap analysis and reported matched/partial/missing skills grounded in resume evidence. Live testing also caught two real issues, both fixed: the old `llama-index-*-gemini` extras sit on Google's deprecated `google.generativeai` (gRPC) stack and the hardcoded `text-embedding-004` model no longer exists — live mode now uses the `google-genai` integrations; and the `analyze_gaps` tool asked the model to pass both texts back, so the agent asked the user for them instead of calling the tool — the tool now reads the loaded context directly.
 
 ## What's real vs mocked
 
@@ -105,5 +105,5 @@ Live mode (`live.py`) builds a LlamaIndex `VectorStoreIndex` over the resume wit
 - Skill matching is lexical: aliases and related terms from a curated lexicon. It will miss skills phrased unusually and can't judge depth — "matched" means *mentioned with evidence*, not *expert*.
 - TF-IDF retrieval is keyword-based; semantic matches (e.g. "built search" → RAG) only register through the lexicon's related terms.
 - The scoring rubric checks surface signals (numbers, STAR markers, term overlap). It can't tell whether an answer is *correct*, only whether it's specific, structured, and grounded.
-- Live mode is implemented but untested (no Gemini key in the test environment).
+- Live mode is verified on the Gemini free tier (embeddings + FunctionAgent gap analysis); the full live mock-interview flow shares the same tools but was not run end-to-end live.
 - Sample resume/JD are fictional and written to exercise every code path.

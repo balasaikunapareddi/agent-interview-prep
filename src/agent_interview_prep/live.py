@@ -1,8 +1,8 @@
 """Live mode: LlamaIndex FunctionAgent + Gemini, same tools.
 
 Everything here is lazy-imported and only runs when GEMINI_API_KEY is set
-(and the `live` extras are installed: llama-index-llms-gemini,
-llama-index-embeddings-gemini). Mock mode never touches this module.
+(and the `live` extras are installed: llama-index-llms-google-genai,
+llama-index-embeddings-google-genai). Mock mode never touches this module.
 
 In live mode the retrieval swap is the point: the local TF-IDF index is
 replaced by a LlamaIndex VectorStoreIndex over the resume chunks with
@@ -33,11 +33,14 @@ def build_live_retriever(resume_text: str):
     require_gemini_key()
     from llama_index.core import VectorStoreIndex
     from llama_index.core.schema import TextNode
-    from llama_index.embeddings.gemini import GeminiEmbedding
+    from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 
     chunks = chunk_text(resume_text, source="resume")
     nodes = [TextNode(text=c.text, metadata={"source": c.source, "index": c.index}) for c in chunks]
-    index = VectorStoreIndex(nodes, embed_model=GeminiEmbedding(model_name="models/text-embedding-004"))
+    embed_model = GoogleGenAIEmbedding(
+        model_name=os.environ.get("GEMINI_EMBEDDING_MODEL", "gemini-embedding-2-preview")
+    )
+    index = VectorStoreIndex(nodes, embed_model=embed_model)
     return index.as_retriever(similarity_top_k=3)
 
 
@@ -46,7 +49,7 @@ def build_live_agent(resume_text: str, jd_text: str):
     require_gemini_key()
     from llama_index.core.agent.workflow import FunctionAgent
     from llama_index.core.tools import FunctionTool
-    from llama_index.llms.gemini import Gemini
+    from llama_index.llms.google_genai import GoogleGenAI
 
     from .tools import (
         AnalyzeGapsInput,
@@ -62,11 +65,14 @@ def build_live_agent(resume_text: str, jd_text: str):
     ctx = PrepContext.from_texts(resume_text, jd_text)
     tools = [
         FunctionTool.from_defaults(
-            fn=lambda resume_text, jd_text: analyze_gaps_tool(
-                ctx, AnalyzeGapsInput(resume_text=resume_text, jd_text=jd_text)
+            # No arguments: the context already holds the loaded resume
+            # and JD. (Asking the model to pass both texts back makes it
+            # ask the user for them instead of calling the tool.)
+            fn=lambda: analyze_gaps_tool(
+                ctx, AnalyzeGapsInput(resume_text=ctx.resume_text, jd_text=ctx.jd_text)
             ),
             name="analyze_gaps",
-            description="Extract JD requirements and match them against resume evidence.",
+            description="Extract JD requirements and match them against resume evidence, using the resume and job description already loaded.",
         ),
         FunctionTool.from_defaults(
             fn=lambda max_questions=None: generate_questions_tool(
@@ -90,6 +96,6 @@ def build_live_agent(resume_text: str, jd_text: str):
     ]
     return FunctionAgent(
         tools=tools,
-        llm=Gemini(model=f"models/{os.environ.get('GEMINI_MODEL', 'gemini-3.5-flash-lite')}"),
+        llm=GoogleGenAI(model=os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")),
         system_prompt=SYSTEM_PROMPT,
     )

@@ -18,8 +18,8 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 live = [
-    "llama-index-llms-gemini>=0.4",
-    "llama-index-embeddings-gemini>=0.3",
+    "llama-index-llms-google-genai>=0.3",
+    "llama-index-embeddings-google-genai>=0.3",
 ]
 
 [project.scripts]
