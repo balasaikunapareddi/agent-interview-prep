@@ -90,6 +90,6 @@ def build_live_agent(resume_text: str, jd_text: str):
     ]
     return FunctionAgent(
         tools=tools,
-        llm=Gemini(model="models/gemini-2.0-flash"),
+        llm=Gemini(model=f"models/{os.environ.get('GEMINI_MODEL', 'gemini-3.5-flash-lite')}"),
         system_prompt=SYSTEM_PROMPT,
     )
