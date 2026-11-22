@@ -29,6 +29,26 @@ flowchart LR
 
 The agent loop (`agent.py`) runs these as typed tools (`tools.py`, pydantic schemas) in sequence. The system prompt (`prompts.py`) is behavior-only; every checkable rule lives in code.
 
+## Project structure
+
+```
+src/agent_interview_prep/
+  agent.py          InterviewPrepAgent — the agent loop (gaps → questions → mock interview → study plan)
+  prompts.py        system prompt (behavior only)
+  tools.py          typed tools over a shared PrepContext (pydantic schemas)
+  documents.py      document loading and chunking
+  retrieval.py      deterministic TF-IDF retrieval over resume chunks
+  skills.py         skill lexicon and JD skill extraction
+  gaps.py           gap analysis: JD requirements vs resume evidence
+  questions.py      question generation (technical / behavioral / bridge)
+  mock_interview.py mock interview runner (scripted or interactive)
+  scoring.py        deterministic answer scoring rubric
+  study_plan.py     prioritized study plan from gaps + weak answers
+  live.py           live mode: LlamaIndex FunctionAgent + Gemini, same tools
+  demo.py           one-command demo (bundled resume vs JD)
+tests/              34 offline tests
+```
+
 ## Why LlamaIndex
 
 The core move in this agent is **retrieval**: index the resume, then for every JD requirement pull the experience that actually evidences it. That's LlamaIndex's home turf — documents, nodes, indexes, retrievers, and an agent layer on top. Mock mode uses LlamaIndex's `Document`/`TextNode` model with a local TF-IDF retriever behind the standard `retrieve(query, top_k)` interface; live mode swaps in a LlamaIndex `VectorStoreIndex` with Gemini embeddings and a `FunctionAgent` driving the same tools.
